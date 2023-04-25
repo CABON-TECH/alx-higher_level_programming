@@ -1,24 +1,18 @@
 #!/usr/bin/node
 
-const request = require('require');
-const API_URL = 'https://swapi-api.alx-tools.com/api/films/';
+const request = require('request');
 
-request(API_URL, function (err, response, body) {
-  if (err) {
-    console.log(err);
-  } else if (response.statusCode === 200) {
-    const films = JSON.parse(body).results;
-    let count = 0;
-    for (const filmIndex in films) {
-      const filmChars = films[filmIndex].characters;
-      for (const charIndex in filmChars) {
-        if (filmChars[charIndex].includes('18')) {
-          count++;
-        }
-      }
-    }
-    console.log(count);
+const apiUrl = process.argv[2];
+const characterId = 18;
+
+request(apiUrl, function (error, response, body) {
+  if (error) {
+    console.error(error);
   } else {
-    console.log('An error occured. Status code: ' + response.statusCode);
+    const films = JSON.parse(body).results;
+    const filmsWithWedge = films.filter(film => {
+      return film.characters.includes(`https://swapi-api.alx-tools.com/api/people/${characterId}/`);
+    });
+    console.log(`Wedge Antilles appears in ${filmsWithWedge.length} films.`);
   }
 });
