@@ -1,9 +1,9 @@
 #!/usr/bin/node
 
 const request = require('require');
-const url = process.argv[2];
+const API_URL = 'https://swapi-api.alx-tools.com/api/films/';
 
-request(url, function (err, response, body) {
+request(API_URL, function (err, response, body) {
   if (err) {
     console.log(err);
   } else if (response.statusCode === 200) {
